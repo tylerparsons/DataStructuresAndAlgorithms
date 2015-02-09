@@ -18,11 +18,11 @@ public abstract class AbstractSort<T extends Comparable<T>> {
 	/**
 	 * Number of comparisons made by sorting algorithm.
 	 */
-	protected int nCompares = 0;
+	protected long nCompares = 0;
 	/**
 	 * Number of assignments made by sorting algorithm.
 	 */
-	protected int nAssigns = 0;
+	protected long nAssigns = 0;
 	
 /********************
  * Abstract Methods *
@@ -89,6 +89,26 @@ public abstract class AbstractSort<T extends Comparable<T>> {
 		T swap = arr[i1];
 		arr[i1] = arr[i2];
 		arr[i2] = swap;
+	}
+	
+/***********
+ * Getters *
+ ***********/
+	
+	/**
+	 * @return nAssigns
+	 * @see #nAssigns
+	 */
+	public long getNAssigns() {
+		return nAssigns;
+	}
+	
+	/**
+	 * @return nCompares
+	 * @see #nCompares
+	 */
+	public long getNCompares() {
+		return nCompares;
 	}
 	
 }

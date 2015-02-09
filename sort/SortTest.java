@@ -11,29 +11,33 @@ import org.junit.Test;
 public class SortTest
 {
 		
-	boolean print = true;
-	
-	@Test
-//	@Ignore
-	public void testAccuracy() {
-		
-		final int runs = 1;
-		final int N = 10;
-		
-		for (AbstractSort<Integer> engine: getEngines())
-			testAccuracy(runs, N, engine);
-		
-	}
+	boolean print = false;
 	
 	@SuppressWarnings("unchecked")
 	AbstractSort<Integer>[] getEngines() {
 		
 		return new AbstractSort[] {
-//			new InsertionSort<Integer>(),
-//			new ShellSort<Integer>(),
-//			new ShellSortHibbard<Integer>(),
+			new InsertionSort<Integer>(),
+			new ShellSort<Integer>(),
+			new ShellSortHibbard<Integer>(),
 			new MergeSort<Integer>()
 		};
+		
+	}
+	
+/*********
+ * Tests *
+ *********/
+	
+	@Test
+	@Ignore
+	public void testAccuracy() {
+		
+		final int runs = 1000;
+		final int N = 100;
+		
+		for (AbstractSort<Integer> engine: getEngines())
+			testAccuracy(runs, N, engine);
 		
 	}
 	
@@ -56,23 +60,8 @@ public class SortTest
 		}
 	}
 	
-	boolean arraysEqual(Integer[] a1, Integer[] a2) {
-		for (int i = 0; i < a1.length; i++)
-			if (a1[i].compareTo(a2[i]) != 0)
-				return false;
-		return true;
-	}
-	
-	Integer[] randomIntegerArray(int N, int max) {
-		Integer[] arr = new Integer[N];
-		for (int i = 0; i < N; i++)
-			arr[i] = (int)(Math.random()*max);
-		return arr;
-	}
-	
 	@Test
-	@Ignore
-	@SuppressWarnings("unchecked")
+//	@Ignore
 	public void compareSpeeds() {
 		
 		int N = 100000;
@@ -82,13 +71,12 @@ public class SortTest
 			long start = System.currentTimeMillis();
 			engine.sort(arr);
 			long end = System.currentTimeMillis();
-			System.out.println(engine.getClass().getName().split("\\.")[1]+": "+(end-start));
+			System.out.println(getName(engine)+" - time(ms): "+(end-start));
 		}
 	}
 	
 	@Test
-	@Ignore
-	@SuppressWarnings("unchecked")
+//	@Ignore
 	public void countOperations() {
 		
 		int N = 100000;
@@ -96,12 +84,34 @@ public class SortTest
 		
 		for (AbstractSort<Integer> engine: getEngines()) {
 			engine.sort(arr);
-			System.out.println(engine.getClass().getName().split("\\.")[1]+" nAssigns: "+engine.nAssigns);
-			System.out.println(engine.getClass().getName().split("\\.")[1]+" nCompares: "+engine.nCompares);
+			String name = getName(engine);
+			System.out.println(name+" - nAssigns: "+engine.getNAssigns());
+			System.out.println(name+" - nCompares: "+engine.getNCompares());
 		}
 		
 	}
 	
+/*********
+ * Utils *
+ *********/
+	
+	protected boolean arraysEqual(Integer[] a1, Integer[] a2) {
+		for (int i = 0; i < a1.length; i++)
+			if (a1[i].compareTo(a2[i]) != 0)
+				return false;
+		return true;
+	}
+	
+	protected Integer[] randomIntegerArray(int N, int max) {
+		Integer[] arr = new Integer[N];
+		for (int i = 0; i < N; i++)
+			arr[i] = (int)(Math.random()*max);
+		return arr;
+	}
+	
+	protected String getName(AbstractSort<?> engine) {
+		return engine.getClass().getName().split("\\.")[1];
+	}
 	
 	
 }
