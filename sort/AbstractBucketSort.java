@@ -52,7 +52,7 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 		if (sortBuckets) {
 			QuickSort<T> engine = new QuickSort<T>();
 			for (List<T> bucket: buckets)
-				SortUtils.sortList(engine, bucket);
+				engine.sortList(bucket);
 		}
 		
 		// Re-populate arr with elements from buckets

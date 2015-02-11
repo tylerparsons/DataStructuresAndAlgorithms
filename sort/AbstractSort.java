@@ -5,6 +5,9 @@
  */
 package sort;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Tyler
  *
@@ -49,6 +52,20 @@ public abstract class AbstractSort<T extends Comparable<T>> {
 	 */
 	public void sort(T[] arr) {
 		sort(arr, 0, arr.length-1);
+	}
+	
+	/**
+	 * Sorts the {@code list} using the given
+	 * sorting engine, which sorts a {@code T[]}.
+	 * 
+	 * @param engine An {@link AbstractSort<T extends Comparable<T>>}
+	 * @param list	 An {@link java.util.List<T>}
+	 */
+	@SuppressWarnings("unchecked")
+	public void sortList(List<T> list) {
+		T[] arr = (T[])list.toArray();
+		sort(arr);
+		list = Arrays.asList(arr);
 	}
 	
 	/**
