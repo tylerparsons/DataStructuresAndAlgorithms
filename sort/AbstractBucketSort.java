@@ -8,6 +8,7 @@ package sort;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.IllegalStateException;
 
 /**
  * @author Tyler
@@ -20,14 +21,35 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 	protected boolean sortBuckets;
 	
 	/**
-	 * For subclasses to call.
+	 * Calls {@link #init(int)} passing {@code nBuckets}
+	 * as an argument.
+	 * @param nBuckets	number of buckets
+	 * @param sort		Indicates whether buckets should be sorted.
+	 */
+	protected AbstractBucketSort(int nBuckets, boolean sort) {
+		sortBuckets = sort;
+		init(nBuckets);
+	}
+	
+	/**
+	 * Does not call {@link #init(int)}. Subclasses
+	 * must call {@link #init(int)} so that {@link #buckets}
+	 * is initialized and a {@link java.lang.IllegalStateException}
+	 * is not thrown in {@link #sort(T[],int,int)}.
+	 * 
+	 * @param sort	Indicates whether buckets should be sorted.
+	 */
+	protected AbstractBucketSort(boolean sort) {
+		sortBuckets = sort;
+	}
+	
+	/**
+	 * Initializes bucket list {@link #buckets}.
 	 * @param nBuckets number of buckets
-	 * @param sort		 sort buckets
 	 */
 	@SuppressWarnings("unchecked")
-	protected AbstractBucketSort(int nBuckets, boolean sort) {
+	protected void init(int nBuckets) {
 		buckets = new List[nBuckets];
-		sortBuckets = sort;
 	}
 
 	/* (non-Javadoc)
@@ -35,6 +57,15 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 	 */
 	@Override
 	public void sort(T[] arr, int lo, int hi) {
+		
+		// Ensures init has been called.
+		if (buckets == null) {
+			throw new IllegalStateException(
+				"Bucket list was never initialized. " +
+				"Subclass must called init to initialize" +
+				" bucket list."
+			);
+		}
 
 		// Put arr elements into buckets
 		for(int i = lo; i <= hi; i++) {
@@ -50,9 +81,12 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 
 		// Sort buckets if requested
 		if (sortBuckets) {
-			QuickSort<T> engine = new QuickSort<T>();
-			for (List<T> bucket: buckets)
-				engine.sortList(bucket);
+//			QuickSort<T> engine = new QuickSort<T>();
+			for (List<T> bucket: buckets) {
+				// Check for null buckets
+				if (bucket != null)
+					Collections.sort(bucket);
+			}
 		}
 		
 		// Re-populate arr with elements from buckets
