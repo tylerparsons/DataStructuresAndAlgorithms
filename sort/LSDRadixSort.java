@@ -14,7 +14,7 @@ public class LSDRadixSort extends AbstractBucketSort<Integer> {
 	protected int divisor;
 	
 	/**
-	 * 
+	 * Specifies that buckets should be unsorted.
 	 */
 	public LSDRadixSort() {
 		super(false);
