@@ -14,11 +14,10 @@ public class LSDRadixSort extends AbstractBucketSort<Integer> {
 	protected int divisor;
 	
 	/**
-	 * Creates a list of unsorted buckets of size ten.
+	 * 
 	 */
 	public LSDRadixSort() {
-		super(10, false);
-		divisor = 1;
+		super(false);
 	}
 	
 	/* (non-Javadoc)
@@ -27,7 +26,9 @@ public class LSDRadixSort extends AbstractBucketSort<Integer> {
 	@Override
 	public void sort(Integer[] arr, int lo, int hi) {
 		
-		
+		// Initialize buckets, divisor
+		initBuckets(10);
+		divisor = 1;
 		
 		// Find max
 		int max = arr[lo];
