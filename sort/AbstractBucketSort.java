@@ -6,7 +6,6 @@
 package sort;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,20 +14,19 @@ import java.util.List;
  *
  */
 public abstract class AbstractBucketSort<T extends Comparable<T>>
-		extends	AbstractSort<T> 
-		implements Iterable<T> {
+		extends	AbstractSort<T> {
 	
 	protected List<T>[] buckets;
 	protected boolean sortBuckets;
 	
 	/**
 	 * For subclasses to call.
-	 * @param bucketSize number of buckets
+	 * @param nBuckets number of buckets
 	 * @param sort		 sort buckets
 	 */
 	@SuppressWarnings("unchecked")
-	protected AbstractBucketSort(int bucketSize, boolean sort) {
-		buckets = new List[bucketSize];
+	protected AbstractBucketSort(int nBuckets, boolean sort) {
+		buckets = new List[nBuckets];
 		sortBuckets = sort;
 	}
 
@@ -56,18 +54,25 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 				Collections.sort(bucket);
 		}
 		
-		// Repopulate arr with elements from buckets
+		// Re-populate arr with elements from buckets
 		int i = lo;
-		for (List<T> bucket: buckets)
-			for (T elem: bucket)
-				assign(arr, i++, elem);
+		for (List<T> bucket: buckets) {
+			// Check for null buckets
+			if (bucket != null) {
+				// Empty bucket
+				for (T elem: bucket) {
+					assign(arr, i++, elem);
+				}
+				bucket.clear();
+			}
+		}
 		
 	}
 	
 	/**
 	 * Returns the bucket index for the given T.
-	 * @param key
-	 * @return
+	 * @param key Some T
+	 * @return the index of the bucket into which to insert T
 	 */
 	protected abstract int getBucketIndex(T key);
 	
