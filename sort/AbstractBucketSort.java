@@ -1,8 +1,3 @@
-/**
- * AbstractBucketSort.java
- * Created: 4 Feb 2015
- * @author	Tyler Parsons
- */
 package sort;
 
 import java.util.ArrayList;
@@ -11,29 +6,40 @@ import java.util.List;
 import java.lang.IllegalStateException;
 
 /**
- * @author Tyler
- *
+ * AbstractBucketSort.java
+ * Created: 4 Feb 2015
+ * @author	Tyler Parsons
  */
 public abstract class AbstractBucketSort<T extends Comparable<T>>
 		extends	AbstractSort<T> {
 	
+	/**
+	 * Array of list buckets.
+	 */
 	protected List<T>[] buckets;
+	/**
+	 * Flag indicating whether buckets should be sorted.
+	 */
 	protected boolean sortBuckets;
 	
+/******************
+ * Initialization *
+ ******************/
+	
 	/**
-	 * Calls {@link #init(int)} passing {@code nBuckets}
+	 * Calls {@link #initBuckets(int)} passing {@code nBuckets}
 	 * as an argument.
 	 * @param nBuckets	number of buckets
 	 * @param sort		Indicates whether buckets should be sorted.
 	 */
 	protected AbstractBucketSort(int nBuckets, boolean sort) {
 		sortBuckets = sort;
-		init(nBuckets);
+		initBuckets(nBuckets);
 	}
 	
 	/**
-	 * Does not call {@link #init(int)}. Subclasses
-	 * must call {@link #init(int)} so that {@link #buckets}
+	 * Does not call {@link #initBuckets(int)}. Subclasses
+	 * must call {@link #initBuckets(int)} so that {@link #buckets}
 	 * is initialized and a {@link java.lang.IllegalStateException}
 	 * is not thrown in {@link #sort(T[],int,int)}.
 	 * 
@@ -48,9 +54,14 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 	 * @param nBuckets number of buckets
 	 */
 	@SuppressWarnings("unchecked")
-	protected void init(int nBuckets) {
+	protected void initBuckets(int nBuckets) {
 		buckets = new List[nBuckets];
 	}
+
+	
+/***********
+ * Sorting *
+ ***********/
 
 	/* (non-Javadoc)
 	 * @see sort.AbstractSort#sort(java.lang.Comparable[], int, int)
@@ -81,7 +92,6 @@ public abstract class AbstractBucketSort<T extends Comparable<T>>
 
 		// Sort buckets if requested
 		if (sortBuckets) {
-//			QuickSort<T> engine = new QuickSort<T>();
 			for (List<T> bucket: buckets) {
 				// Check for null buckets
 				if (bucket != null)
