@@ -12,7 +12,7 @@ public class SortTest
 {
 	
 	protected final int runs = 10;
-	protected final int N = 100;
+	protected final int N = 1000;
 	
 	@SuppressWarnings("unused")
 	boolean print = runs <= 10 && N <= 30;
@@ -21,13 +21,13 @@ public class SortTest
 	AbstractSort<Integer>[] getEngines() {
 		
 		return new AbstractSort[] {
-//			new InsertionSort<Integer>(),
-//			new ShellSort<Integer>(),
-//			new ShellSortHibbard<Integer>(),
-//			new MergeSort<Integer>(),
-//			new SelectionSort<Integer>(),
-//			new QuickSort<Integer>(),
-//			new IntegerBucketSort(),
+			new InsertionSort<Integer>(),
+			new ShellSort<Integer>(),
+			new ShellSortHibbard<Integer>(),
+			new MergeSort<Integer>(),
+			new SelectionSort<Integer>(),
+			new QuickSort<Integer>(),
+			new IntegerBucketSort(),
 			new LSDRadixSort()
 		};
 		
@@ -42,11 +42,11 @@ public class SortTest
 	public void testAccuracy() {
 				
 		for (AbstractSort<Integer> engine: getEngines())
-			testIntAccuracy(runs, N, engine);
+			testAccuracy(runs, N, engine);
 		
 	}
 	
-	void testIntAccuracy(final int runs, final int N, AbstractSort<Integer> engine) {
+	protected void testAccuracy(final int runs, final int N, AbstractSort<Integer> engine) {
 		
 		Integer[] original, sorted;
 		
@@ -94,33 +94,6 @@ public class SortTest
 		
 	}
 	
-	@Test
-//	@Ignore
-	public void testProbabilityBucketSort() {
-		
-		testDoubleAccuracy(runs, N, new ProbabilityBucketSort());
-		
-	}
-	
-	void testDoubleAccuracy(final int runs, final int N, AbstractSort<Double> engine) {
-		
-		Double[] original, sorted;
-		
-		for (int i=0; i<runs; i++) {
-			
-			original = randomDoubleArray(N, 1);
-			sorted = Arrays.copyOf(original, N);
-			
-			if(print) System.out.println(Arrays.toString(original));
-			engine.sort(original);
-			Arrays.sort(sorted);
-			if(print) System.out.println(Arrays.toString(original));
-			if(print) System.out.println(Arrays.toString(sorted));
-		
-			assertTrue(arraysEqual(original, sorted));
-		}
-	}
-	
 	
 /*********
  * Utils *
@@ -140,16 +113,8 @@ public class SortTest
 		return arr;
 	}
 	
-	protected Double[] randomDoubleArray(int N, double max) {
-		Double[] arr = new Double[N];
-		for (int i = 0; i < N; i++)
-			arr[i] = Math.random()*max;
-		return arr;
-	}
-	
 	protected String getName(AbstractSort<?> engine) {
 		return engine.getClass().getName().split("\\.")[1];
-	}
-	
+	}	
 	
 }
