@@ -34,7 +34,7 @@ public class IntegerBucketSort extends AbstractBucketSort<Integer> {
 		}
 		
 		// Initialize buckets, determine offset
-		init(max - min + 1);
+		initBuckets(max - min + 1);
 		offset = min;
 		
 		// Delegate sorting to super
