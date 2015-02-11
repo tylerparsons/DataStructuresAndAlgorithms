@@ -66,6 +66,8 @@ public abstract class AbstractSort<T extends Comparable<T>> {
 		T[] arr = (T[])list.toArray();
 		sort(arr);
 		list = Arrays.asList(arr);
+		// Add 2N copy operations to nAssigns
+		nAssigns += 2*list.size();
 	}
 	
 	/**
