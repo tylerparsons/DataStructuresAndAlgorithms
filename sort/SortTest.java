@@ -12,7 +12,7 @@ public class SortTest
 {
 	
 	protected final int runs = 10;
-	protected final int N = 1000;
+	protected final int N = 10000;
 	
 	@SuppressWarnings("unused")
 	boolean print = runs <= 10 && N <= 30;
@@ -26,9 +26,10 @@ public class SortTest
 			new ShellSortHibbard<Integer>(),
 			new MergeSort<Integer>(),
 			new SelectionSort<Integer>(),
-			new QuickSort<Integer>(),
+//			new QuickSort<Integer>(),
 			new IntegerBucketSort(),
-			new LSDRadixSort()
+			new LSDRadixSort(),
+			new HeapSort<Integer>()
 		};
 		
 	}
@@ -66,7 +67,7 @@ public class SortTest
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void compareSpeeds() {
 		
 		Integer[] arr = randomIntegerArray(N, N);
