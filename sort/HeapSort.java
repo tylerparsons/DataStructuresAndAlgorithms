@@ -9,10 +9,6 @@ import queue.ArrayHeap;
  */
 public class HeapSort<T extends Comparable<T>> extends AbstractSort<T> {
 	
-/***********
- * Sorting *
- ***********/
-	
 	/* (non-Javadoc)
 	 * @see sort.AbstractSort#sort(java.lang.Comparable[], int, int)
 	 */
@@ -23,19 +19,13 @@ public class HeapSort<T extends Comparable<T>> extends AbstractSort<T> {
 		ArrayHeap<T> heap = new ArrayHeap<T>(arr, (hi-lo)+1, lo);
 		// At this point, the section of arr from lo to hi is a heap.
 		
-		// Calls removeMax, which places max elements
-		// at the back of the heap in ascending order
-		for (int i = hi; i > lo; i--) {
-			heap.removeMax();
-		}
+		// Delegate sorting to ArrayHeap
+		heap.sort();
+		
+		// Update operation counts
+		nAssigns = heap.getNAssigns();
+		nCompares = heap.getNCompares();
 		
 	}
-	
-	
-/*********
- * Utils *
- *********/
-	
-	
 
 }
