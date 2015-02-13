@@ -48,25 +48,11 @@ public class ArrayHeapTest {
 	
 	protected void testRemoveMax(ArrayHeap<Integer> heap, Integer[] arr, int offset) {
 		
-		if(print) {
-			System.out.println(Arrays.toString(arr));
-			char[] spaces = new char[arr.length*3];
-			// Add pointers to first and last heap elements
-			spaces[1+offset*3] = spaces[1+heap.size()*3] = '^';
-			System.out.println(new String(spaces).replace('\0', ' '));
-		}
+		if(print) printArray(arr, offset, heap.size());
 		
 		int max = heap.removeMax();
 		while(heap.size() > 0) {
-			
-			if(print) {
-				System.out.println(Arrays.toString(arr));
-				char[] spaces = new char[arr.length*3];
-				// Add pointers to first and last heap elements
-				spaces[1+offset*3] = spaces[1+heap.size()*3] = '^';
-				System.out.println(new String(spaces).replace('\0', ' '));
-			}
-			
+			if(print) printArray(arr, offset, heap.size());
 			int tmp = heap.removeMax();
 			assertTrue(max >= tmp);
 			max = tmp;
@@ -87,6 +73,21 @@ public class ArrayHeapTest {
 		for (int i = 0; i < N; i++)
 			arr[i] = (int)(Math.random()*max);
 		return arr;
+	}	
+	
+	/**
+	 * Prints an array and a pointer to the element at each ptr
+	 * @param arr array of single digit values.
+	 * @param ptrs indices
+	 */
+	public static <T> void printArray(T[] arr, int ... ptrs) {
+		// Print array & ptr location
+		System.out.println(Arrays.toString(arr));
+		char[] spaces = new char[arr.length*3];
+		// Add pointers to given elements
+		for (int ptr: ptrs)
+			spaces[1+ptr*3] = '^';
+		System.out.println(new String(spaces).replace('\0', ' '));
 	}
 	
 }
