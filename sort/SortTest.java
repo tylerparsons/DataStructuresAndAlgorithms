@@ -12,7 +12,7 @@ public class SortTest
 {
 	
 	protected final int runs = 10;
-	protected final int N = 10000;
+	protected final int N = 1000;
 	
 	@SuppressWarnings("unused")
 	boolean print = runs <= 10 && N <= 30;
@@ -26,7 +26,7 @@ public class SortTest
 			new ShellSortHibbard<Integer>(),
 			new MergeSort<Integer>(),
 			new SelectionSort<Integer>(),
-//			new QuickSort<Integer>(),
+			new QuickSort<Integer>(),
 			new IntegerBucketSort(),
 			new LSDRadixSort(),
 			new HeapSort<Integer>()
@@ -73,21 +73,23 @@ public class SortTest
 		Integer[] arr = randomIntegerArray(N, N);
 		
 		for (AbstractSort<Integer> engine: getEngines()) {
+			Integer[] copy = Arrays.copyOf(arr, N);
 			long start = System.currentTimeMillis();
-			engine.sort(arr);
+			engine.sort(copy);
 			long end = System.currentTimeMillis();
 			System.out.println(getName(engine)+" - time(ms): "+(end-start));
 		}
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void countOperations() {
 		
 		Integer[] arr = randomIntegerArray(N, N);
 		
 		for (AbstractSort<Integer> engine: getEngines()) {
-			engine.sort(arr);
+			Integer[] copy = Arrays.copyOf(arr, N);
+			engine.sort(copy);
 			String name = getName(engine);
 			System.out.println(name+" - nAssigns: "+engine.getNAssigns());
 			System.out.println(name+" - nCompares: "+engine.getNCompares());
