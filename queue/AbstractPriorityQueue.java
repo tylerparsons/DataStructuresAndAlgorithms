@@ -2,13 +2,15 @@ package queue;
 
 import java.util.NoSuchElementException;
 
+import common.AbstractAlgorithm;
+
 /**
  * 
  * @author Tyler
  *
  * @param <T>
  */
-public abstract class AbstractPriorityQueue<T extends Comparable<T>> {
+public abstract class AbstractPriorityQueue<T extends Comparable<T>> extends AbstractAlgorithm<T> {
 
 /********************
  * Abstract Methods *
@@ -38,19 +40,6 @@ public abstract class AbstractPriorityQueue<T extends Comparable<T>> {
 	 */
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-	
-	/**
-	 * Invokes {@link java.lang.Comparable#compareTo(Object)}
-	 * with {@code from} on {@code to}.
-	 * 
-	 * @param from	some T
-	 * @param to	some T
-	 * @return		int representing comparison
-	 * @see	java.lang.Comparable#compareTo(Object)
-	 */
-	protected int compareTo(T from, T to) {
-		return from.compareTo(to);
 	}
 	
 }

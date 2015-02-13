@@ -62,8 +62,9 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 	 */
 	@Override
 	public void add(T key) {
-		// Add key at leftmost leaf (overwrites previous value)
-		arr[N+d] = key;
+		// Add key at the end of heap.
+		// Assumes the array is indexed there.
+		assign(arr, N+d, key);
 		// Swim until array is heap
 		swim(d+N++);
 	}
@@ -77,7 +78,7 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 		if (N == 0) throw new NoSuchElementException("Heap empty");
 		// Replace max with rightmost leaf
 		T max = arr[d];
-		arr[d] = arr[(--N)+d];
+		swap(arr, d, (--N)+d);
 		// Sink leaf
 		sink(d);
 		return max;
@@ -98,7 +99,7 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 	public void swim(int i) {
 		int p;
 		while(i > 0 && compareTo(arr[p = getParentIndex(i)], arr[i]) < 0) {
-			swap(p, i);
+			swap(arr, p, i);
 			i = p;
 		}
 	}
@@ -111,14 +112,14 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 		
 		// Sink along path containing max children
 		int j = getLeftChildIndex(i);
-		while (j < N+d)	{
+		while (j < getRMLeafIndex()+1)	{
 			
 			// Select max child
 			if (j < N-1+d && compareTo(arr[j], arr[j+1]) < 0) j++;
 			// Compare with parent
 			if (compareTo(arr[i], arr[j]) >= 0) break;
 			// Swap parent with larger child
-			swap(i, j);
+			swap(arr, i, j);
 			// Examine max subtree
 			i = j;
 			j = getLeftChildIndex(i);
@@ -130,7 +131,7 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 	/**
 	 * Creates a heap out of the array if it is not already.
 	 */
-	protected void buildHeap() {
+	public void buildHeap() {
 		// Sink all non leaf nodes
 		for (int i = findLowestNonLeaf(); i >= d; i--)
 			sink(i);
@@ -139,6 +140,36 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 /*********
  * Utils *
  *********/
+	
+	/**
+	 * Sorts the heap in ascending order.
+	 * Note that {@link #isHeap()} will return
+	 * false after this operation, and
+	 * {@link #buildHeap()} must be called to
+	 * reconstruct a heap.
+	 */
+	public void sort() {
+		
+		// Ensure N is unchanged
+		int oldN = N;
+		
+		// Calls removeMax, which places max elements
+		// at the back of the heap in ascending order
+		for (int i = getRMLeafIndex(); i > d; i--) {
+			removeMax();
+		}
+		
+		N = oldN;
+		
+	}
+	
+	/**
+	 * Computes index of rightmost leaf.
+	 * @return N-1+d
+	 */
+	public int getRMLeafIndex() {
+		return N-1+d;
+	}
 	
 	/**
 	 * Parent index for a d-indexed heap
@@ -165,17 +196,6 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 	 */
 	public int getRightChildIndex(int i) {
 		return 2*(i-d+1) + d;
-	}
-	
-	/**
-	 * Swaps the elements of arr at i and j.
-	 * @param i	index
-	 * @param j	index
-	 */
-	public void swap(int i, int j) {
-		T t = arr[i];
-		arr[i] = arr[j];
-		arr[j] = t;
 	}
 	
 	/**
