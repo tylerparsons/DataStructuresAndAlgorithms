@@ -78,7 +78,7 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 		if (N == 0) throw new NoSuchElementException("Heap empty");
 		// Replace max with rightmost leaf
 		T max = arr[d];
-		swap(arr, d, (--N)+d);
+		assign(arr, d, arr[(--N)+d]);
 		// Sink leaf
 		sink(d);
 		return max;
@@ -140,28 +140,6 @@ public class ArrayHeap<T extends Comparable<T>> extends AbstractPriorityQueue<T>
 /*********
  * Utils *
  *********/
-	
-	/**
-	 * Sorts the heap in ascending order.
-	 * Note that {@link #isHeap()} will return
-	 * false after this operation, and
-	 * {@link #buildHeap()} must be called to
-	 * reconstruct a heap.
-	 */
-	public void sort() {
-		
-		// Ensure N is unchanged
-		int oldN = N;
-		
-		// Calls removeMax, which places max elements
-		// at the back of the heap in ascending order
-		for (int i = getRMLeafIndex(); i > d; i--) {
-			removeMax();
-		}
-		
-		N = oldN;
-		
-	}
 	
 	/**
 	 * Computes index of rightmost leaf.

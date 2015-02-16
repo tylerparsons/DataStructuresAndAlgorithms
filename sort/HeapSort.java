@@ -19,11 +19,14 @@ public class HeapSort<T extends Comparable<T>> extends AbstractSort<T> {
 		ArrayHeap<T> heap = new ArrayHeap<T>(arr, (hi-lo)+1, lo);
 		// At this point, the section of arr from lo to hi is a heap.
 		
-		// Delegate sorting to ArrayHeap
-		heap.sort();
+		// Calls removeMax and places max elements
+		// at the back of the heap in ascending order
+		for (int i = hi; i > lo; i--) {
+			assign(arr, i, heap.removeMax());
+		}
 		
 		// Update operation counts
-		nAssigns = heap.getNAssigns();
+		nAssigns += heap.getNAssigns();
 		nCompares = heap.getNCompares();
 		
 	}
